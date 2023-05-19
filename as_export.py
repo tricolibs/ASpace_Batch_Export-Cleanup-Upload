@@ -1,5 +1,6 @@
 import json
 import re
+import time
 
 from as_xtf_GUI import logger
 from pathlib import Path
@@ -31,6 +32,8 @@ class ASExport:
         else:
             self.filename = self.input_id
             """str: the name assigned to the exported file, takes input_id and removes any "/"s"""
+        # timestr = time.strftime("%Y%m%d%H%M%S")
+        # self.filename = timestr + self.filename
         self.repo_id = repo_id
         """int: contains the number for which a repository is assigned via the ArchivesSpace instance"""
         self.resource_id = None
@@ -191,7 +194,8 @@ class ASExport:
                                                                                                 self.resource_id),
                                               params={'include_unpublished_marc': include_unpublished})
             if request_marcxml.status_code == 200:
-                self.filepath += ".xml"
+                #self.filepath += ".xml"
+                self.filepath += ("-" + time.strftime("%Y%m%d%H%M%S")+ ".xml")
                 with open(self.filepath, "wb") as local_file:
                     local_file.write(request_marcxml.content)
                     local_file.close()
